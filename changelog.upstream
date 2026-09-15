@@ -1,3 +1,123 @@
+commit 524de99b154b0b75a6751d30803a1c79af5042b1
+Merge: abcb53b 200b678
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Tue Sep 15 10:17:34 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/org-ai-assisted/ai'
+
+commit 200b678f3218f7f015de7b6e4b913fb4bdd04a88
+Author: claude (dev556 4bdc306f-7204-4d7f-ba68-0c897dcf0291) <noreply@anthropic.com>
+Date:   Tue Sep 15 09:21:27 2026 -0400
+
+    postinst: keep the debhelper token out of the nounset comment
+
+    - the prior comment literally contained the debhelper substitution token;
+      dh_installdeb replaces that token ANYWHERE it appears, so the generated code
+      was spliced into the middle of the comment and the trailing words ran as a
+      command ("so: command not found"), failing the postinst. Reword the comment
+      so only the real substitution line carries the token.
+
+commit 88e344b1363e2f36b0dbc2b3ffee8d24c0429cfe
+Author: claude (dev556 4bdc306f-7204-4d7f-ba68-0c897dcf0291) <noreply@anthropic.com>
+Date:   Tue Sep 15 09:06:01 2026 -0400
+
+    postinst: disable nounset around #DEBHELPER# (unbound $2 on install)
+
+    - the house-style 'set -o nounset' preamble leaked into the #DEBHELPER#-generated
+      snippets, which reference $2 (empty on first install) and are not nounset-safe;
+      they aborted with "$2: unbound variable", failing the package's postinst and
+      thus 3500_install-packages in the image build. Disable nounset around
+      #DEBHELPER#, restore after. No behavior change on upgrade.
+
+commit abcb53b92a3b607dae01e5b802f6cdd3f55ab326
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Tue Sep 15 11:51:03 2026 +0000
+
+    bumped changelog version
+
+commit 1ed532bb01a8ef87ecb034a918ae5d283c4d05b1
+Author: claude (dev556 4bdc306f-7204-4d7f-ba68-0c897dcf0291) <noreply@anthropic.com>
+Date:   Mon Sep 14 09:30:18 2026 -0400
+
+    Drop live_build check; house-style the postinst
+
+    - The derivative-maker build no longer writes the live_build marker
+      file; derivative_maker=true is set for every build (ISO and VM/disk),
+      so the file check was redundant.
+    - Modernize to dist-ai house style: strict-mode block, printf not echo,
+      has not command -v, braced + nounset-guarded variables.
+
+commit 87d693cbba132506466c631c6afd5fd533c35cb4
+Merge: 690870b ff968c0
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Mon Sep 14 02:14:53 2026 -0400
+
+    Merge remote-tracking branch 'refs/remotes/ArrayBolt3/arraybolt3/trixie'
+
+commit ff968c0ab78b5072d25ba4755a0a1f0113c1367b
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Sun Sep 13 18:34:07 2026 -0400
+
+    Move privleap configuration to non-conffile location
+
+commit c0ed826b5467883ce21273441552894260ede98b
+Merge: 690870b 56c6733
+Author: Aaron Rainbolt <arraybolt3@gmail.com>
+Date:   Sun Sep 13 13:46:49 2026 -0400
+
+    Merge branch 'ai' into arraybolt3/trixie
+
+commit 56c6733395c1900a0e9fa230673bf5dbdeee07f5
+Merge: 697294e 124c89d
+Author: claude <noreply@anthropic.com>
+Date:   Tue Sep 8 13:58:00 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit 124c89d3dc6d00dd040d35a07176239658264b68
+Merge: 126bbb3 690870b
+Author: claude <noreply@anthropic.com>
+Date:   Tue Sep 8 13:58:00 2026 -0400
+
+    Merge remote-tracking branch 'upstream/master'
+
+commit 690870b7f68f9f5d4135f7ee64fa9eb2bbf1ebab
+Author: Patrick Schleizer <adrelanos@whonix.org>
+Date:   Tue Sep 8 15:17:05 2026 +0000
+
+    bumped changelog version
+
+commit 126bbb3ba9d354d421b26cee8d13b9eef37b7ab9
+Merge: e089f8d 697294e
+Author: assisted-by-ai (Bot Account) (Machine Account) <228987186+assisted-by-ai@users.noreply.github.com>
+Date:   Mon Sep 7 22:13:55 2026 -0400
+
+    Merge pull request #3 from org-ai-assisted/ai
+
+    rename has.sh -> has.bsh (bashism convention)
+
+commit 697294e1d0849ead8caabde063f1f21b1fc0b96a
+Author: claude (dev474 c7439536-fad8-4884-b71a-d2f3c4c23905) <noreply@anthropic.com>
+Date:   Mon Sep 7 11:44:14 2026 -0400
+
+    rename has.sh to has.bsh (bashism convention)
+
+    Sourced helper-scripts lib uses bashisms; .bsh marks it. Path-only edit.
+
+commit 115482648943003b8a1a977c72983d820ed685c2
+Merge: 23a2988 e089f8d
+Author: claude (dev474 c7439536-fad8-4884-b71a-d2f3c4c23905) <noreply@anthropic.com>
+Date:   Mon Sep 7 11:44:14 2026 -0400
+
+    Merge branch 'master' into ai
+
+commit e089f8d8261b348b6bce041a3c9b5d3b0c45965f
+Merge: 4772343 c751efa
+Author: claude (dev474 c7439536-fad8-4884-b71a-d2f3c4c23905) <noreply@anthropic.com>
+Date:   Mon Sep 7 11:44:13 2026 -0400
+
+    Merge remote-tracking branch 'ArrayBolt3/arraybolt3/trixie'
+
 commit ec73e4ea3ea543946f08f7843fee88a7fd50bd8e
 Merge: 4772343 c751efa
 Author: Patrick Schleizer <adrelanos@whonix.org>
