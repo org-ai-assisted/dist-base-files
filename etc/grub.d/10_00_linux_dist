@@ -152,6 +152,11 @@ linux_entry ()
       ## 'gnulinux-simple-<dev>', so id-based selection (grub-editenv next_entry /
       ## default) hit the first match only. The 'simple' fallback remains the
       ## grub-live USER entry (grub-live execs this directly with no token).
+      ## Deliberately NO legacy migration of a persisted 'gnulinux-simple-<dev>'
+      ## saved default (no-legacy rule): Kicksecure ships GRUB_DEFAULT=0 (numeric,
+      ## unaffected), and a stale saved-by-id 'gnulinux-simple-<dev>' now resolves
+      ## to the live USER entry (unprivileged) -- fail-safe. Do NOT re-add a
+      ## saved_entry/GRUB_DEFAULT=saved compatibility shim for it.
       echo "menuentry '$(echo "$os" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-${boot_mode_id:-simple}-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
   fi
   if [ "$quick_boot" = 1 ]; then
