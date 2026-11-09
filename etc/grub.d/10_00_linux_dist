@@ -145,11 +145,13 @@ linux_entry ()
       fi
       echo "menuentry '$(echo "$title" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-$version-$type-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
   else
-      ## Kicksecure patch: scope the simple-entry id by boot mode. boot_mode_id is
-      ## exported by the 10_0x wrapper (user|sysmaint|remove-sysmaint); without it
-      ## every boot-mode entry shared 'gnulinux-simple-<dev>', so selecting a mode
-      ## by id (grub-editenv next_entry / default) hit the first match (USER) only.
-      ## Falls back to 'simple' for any non-wrapper invocation.
+      ## Kicksecure patch: scope the simple-entry id by boot mode. Each boot-mode
+      ## wrapper exports boot_mode_id (dist-base-files 10_05 -> user;
+      ## user-sysmaint-split 10_10 -> persistent-sysmaint / live-sysmaint, 10_30 ->
+      ## remove-sysmaint). Without it every boot-mode entry shared
+      ## 'gnulinux-simple-<dev>', so id-based selection (grub-editenv next_entry /
+      ## default) hit the first match only. The 'simple' fallback remains the
+      ## grub-live USER entry (grub-live execs this directly with no token).
       echo "menuentry '$(echo "$os" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-${boot_mode_id:-simple}-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
   fi
   if [ "$quick_boot" = 1 ]; then
