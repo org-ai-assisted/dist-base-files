@@ -145,7 +145,12 @@ linux_entry ()
       fi
       echo "menuentry '$(echo "$title" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-$version-$type-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
   else
-      echo "menuentry '$(echo "$os" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-simple-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
+      ## Kicksecure patch: scope the simple-entry id by boot mode. boot_mode_id is
+      ## exported by the 10_0x wrapper (user|sysmaint|remove-sysmaint); without it
+      ## every boot-mode entry shared 'gnulinux-simple-<dev>', so selecting a mode
+      ## by id (grub-editenv next_entry / default) hit the first match (USER) only.
+      ## Falls back to 'simple' for any non-wrapper invocation.
+      echo "menuentry '$(echo "$os" | grub_quote)' ${CLASS} \$menuentry_id_option 'gnulinux-${boot_mode_id:-simple}-$boot_device_id' {" | sed "s/^/$submenu_indentation/"
   fi
   if [ "$quick_boot" = 1 ]; then
       echo "	recordfail" | sed "s/^/$submenu_indentation/"
