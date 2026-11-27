@@ -10,15 +10,17 @@ dsudo(8) -- default password sudo
 `dsudo [OPTIONS]`
 
 ## DESCRIPTION
-Runs `sudo` default password "changeme".
+Runs `sudo` submitting the account's default empty password.
 
 Forwards all environment variables and parameters to `sudo`.
 
 Sets `SUDO_ASKPASS=/usr/libexec/derivative-base-files/askpass-default`
-which sets `sudo_password=changeme` - unless environment variable
-`sudo_password` is already set to something else.
+which submits an empty-by-default `sudo_password` unless environment
+variable `sudo_password` is already set to something else (e.g.
+`sudo_password=changeme dsudo ...` for a legacy image).
 
-Useful for testing.
+Useful for headless/automated root, where a plain `sudo -n` is refused
+because an empty password still has to be submitted.
 
 ## AUTHOR
 This man page has been written by Patrick Schleizer (adrelanos@whonix.org).

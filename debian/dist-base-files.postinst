@@ -35,6 +35,18 @@ enable_systemd_repart_maybe() {
    true "INFO: ${FUNCNAME[0]} OK."
 }
 
+## REMINDER: Remove when we migrate from Trixie to Forky
+purge_dist_skel_first_boot_unit() {
+   if [ -f "/var/lib/dist-base-files/do_once/${FUNCNAME[0]}_version_1" ]; then
+      return 0
+   fi
+   mkdir --parents "/var/lib/dist-base-files/do_once"
+
+   deb-systemd-helper purge dist-skel-first-boot.service || true
+
+   touch "/var/lib/dist-base-files/do_once/${FUNCNAME[0]}_version_1"
+}
+
 check_linux_account_specific() {
    if has qubesdb-read ; then
       ## Leave account 'user' creation to Qubes.
@@ -198,6 +210,7 @@ case "${1:-}" in
       true "INFO: Configuring ${DPKG_MAINTSCRIPT_PACKAGE:-}..."
 
       enable_systemd_repart_maybe
+      purge_dist_skel_first_boot_unit
 
       if [ ! -f "${build_version_file}" ]; then
          ## Sanity test.

@@ -9,7 +9,6 @@ set -o pipefail
 set -o errtrace
 shopt -s inherit_errexit
 shopt -s shift_verbose
+export LC_ALL=C
 
-sudo_password="${sudo_password:-changeme}"
-
-printf '%s\n' "${sudo_password}"
+printf '%s\n' "${sudo_password-}"
