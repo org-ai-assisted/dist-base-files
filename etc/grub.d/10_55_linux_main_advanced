@@ -15,6 +15,8 @@ set -o allexport
 
 make_boot_entry='true'
 
+boot_mode_id='user'
+
 : "${persistence_type:="PERSISTENT"}"
 : "${session_detail:="daily activities"}"
 
